@@ -1,0 +1,46 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #333;
+  color: #ccc;
+  font-family: monospace;
+  font-size: 18px;
+}
+
+span {
+  position: absolute;
+  display: inline-block;
+  width: 14px;
+  height: 20px;
+}
+
+#player {
+  top: 340px;
+  left: 620px;
+  z-index: 1;
+  background-color: purple;
+}
+
+#snow {
+  background-color: white;
+  z-index: -1;
+}
+
+#scoreboard {
+  height: 100vh;
+  width: 140px;
+}
+
+#scoreboard h3 {
+  padding: 20px;
+}
+
+#scoreboard #score {
+  display: block;
+  padding: 12px;
+  font-size: 40px;
+}
+
