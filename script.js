@@ -1,39 +1,67 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   var player = document.querySelector('#player');
-  var scoreboard = document.querySelector('#scoreboard');
   player.style.top = '340px';
   player.style.left = '620px';
-  gameScore = score();
+
+  var scoreboard = document.querySelector('#scoreboard');
+  var gameScore = score();
 
   var score = document.querySelector('#score');
   score.textContent = gameScore.getScore();
 
+  var numCombo = captureNum();
+
   function startGame() {
     snow1 = createGameElement('snow');
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keyup', function(event) {
       var player = document.querySelector('#player');
+
+      numCombo.filterNums(event.key);
+
       var keyCode = event.which;
-
-      if (keyCode === 74 || keyCode === 40) moveDown1(player); 
-      if (keyCode === 75 || keyCode === 38) moveUp1(player); 
-      if (keyCode === 72 || keyCode === 37) moveLeft1(player);
-      if (keyCode === 76 || keyCode === 39) moveRight1(player);
+      if (keyCode === 74 || keyCode === 40) moveDown1(player, numCombo); 
+      if (keyCode === 75 || keyCode === 38) moveUp1(player, numCombo); 
+      if (keyCode === 72 || keyCode === 37) moveLeft1(player, numCombo);
+      if (keyCode === 76 || keyCode === 39) moveRight1(player, numCombo);
       
-      if (snow1) {      
-        if (snow1.getLeftPosition() === player.style.left && snow1.getTopPosition() === player.style.top) {
-          gameScore.incrementScore1();
-          score.textContent = gameScore.getScore();
+      if (snow1.getLeftPosition() === player.style.left && snow1.getTopPosition() === player.style.top) {
+        gameScore.incrementScore1();
+        score.textContent = gameScore.getScore();
 
-          snow = document.querySelector('#snow');
-          snow.remove()
-          snow1 = null;
+        snow = document.querySelector('#snow');
+        snow.remove()
+        snow1 = null;
 
-          snow1 = createGameElement('snow');
-        }
+        snow1 = createGameElement('snow');
       }
     });
+  }
+
+  // 48-57
+  function captureNum() {
+    var multiplerArr = [];
+    return {
+      filterNums: function(key) {
+        if (!isNaN(Number(key))) { 
+          multiplerArr.push(key);
+          console.log('added num key ' + key);
+        } else if (key === 'Escape') {
+          multiplerArr = [];
+          console.log('emptied all num keys');
+        };
+        console.log(multiplerArr);
+      },
+      getMultiplier: function() {
+        num = Number(multiplerArr.join('')); 
+        if (num !== 0) return num;
+        return 1;
+      },
+      emptyMultiplier: function() {
+        multiplerArr = [];
+      }
+    }
   }
 
   function score() {
@@ -73,32 +101,56 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function moveDown1(player, multipler) {
-    var multipler = multipler || 1;
+  function moveDown1(player, numCombo) {
+    var multipler = numCombo.getMultiplier()
     var num = Number(player.style.top.slice(0, -2))
-    if (num < 660) num += 20;
+    incrementNum = 20 * multipler;
+    if ((num + incrementNum) < 660) {
+      num += incrementNum;
+    } else {
+      num = 660;
+    }
     player.style.top = num + 'px';
+    numCombo.emptyMultiplier();
   }
 
-  function moveUp1(player, multipler) {
-    var multipler = multipler || 1;
+  function moveUp1(player, numCombo) {
+    var multipler = numCombo.getMultiplier()
     var num = Number(player.style.top.slice(0, -2))
-    if (num > 0) num -= 20;
+    incrementNum = 20 * multipler; 
+    if ((num - incrementNum) > 0) {
+      num -= incrementNum;
+    } else {
+      num = 0;
+    }
     player.style.top = num + 'px';
+    numCombo.emptyMultiplier();
   }
 
-  function moveRight1(player, multipler) {
-    var multipler = multipler || 1;
+  function moveRight1(player, numCombo) {
+    var multipler = numCombo.getMultiplier()
     var num = Number(player.style.left.slice(0, -2))
-    if (num < 1240) num += 20;
+    incrementNum = 20 * multipler; 
+    if ((num + incrementNum) < 1240) {
+      num += incrementNum;
+    } else {
+      num = 1240;
+    }
     player.style.left = num + 'px';
+    numCombo.emptyMultiplier();
   }
 
-  function moveLeft1(player, multipler) {
-    var multipler = multipler || 1;
+  function moveLeft1(player, numCombo) {
+    var multipler = numCombo.getMultiplier()
     var num = Number(player.style.left.slice(0, -2))
-    if (num > 0) num -= 20;
+    incrementNum = 20 * multipler; 
+    if ((num - incrementNum) > 0) {
+      num -= incrementNum;
+    } else {
+      num = 0;
+    }
     player.style.left = num + 'px';
+    numCombo.emptyMultiplier();
   }
 
   startGame();
@@ -304,3 +356,80 @@ document.addEventListener('DOMContentLoaded', function() {
 // console.log(snow1.getSpeed());
 // snow1.changeSpeed(600);
 // console.log(snow1.getSpeed());
+
+
+
+// var player = createPlayer();
+
+// document.addEventListener('keydown', function(event) {
+
+//   var keyCode = event.which;
+//   if (keyCode === 74 || keyCode === 40) movePosition(player, 'down', 1); 
+//   if (keyCode === 75 || keyCode === 38) movePosition(player, 'up', 1); 
+//   if (keyCode === 72 || keyCode === 37) movePosition(player, 'left', 1);
+//   if (keyCode === 76 || keyCode === 39) movePosition(player, 'right', 1);
+// });
+
+
+// function createPlayer() {
+//   var player = document.querySelector('span');
+//   player.style.top = '340px';
+//   player.style.left = '620px';
+
+//   return player;
+// }
+
+// function movePosition(player, direction, count) {
+//   var currentTop = Number(player.style.top.slice(0, -2))
+//   var currentLeft = Number(player.style.left.slice(0, -2))
+//   var newTop;
+//   if (currentTop >= 660 || currentTop <= 0) return;
+//   if (currentLeft >= 1240 || currentLeft <= 0) return;
+
+//   switch(direction) {
+//     case 'down':
+//       newTop = currentTop += 20;
+//       player.style.top = newTop + 'px';
+//       break;
+//     case 'up': {
+//       newTop = currentTop -= 20;
+//       player.style.top = newTop + 'px';
+//       break;
+//     }
+//     case 'right': {
+//       newTop = currentLeft += 20;
+//       player.style.top = newTop + 'px';
+//       break;
+//     }
+//     case 'left': {
+//       newTop = currentLeft -= 20;
+//       player.style.top = newTop + 'px';
+//       break;
+//     }
+//   }
+// }
+
+// // function moveDown1(player) {
+// //   var num = Number(player.style.top.slice(0, -2))
+// //   if (num < 660) num += 20;
+// //   player.style.top = num + 'px';
+// // }
+
+// // function moveUp1(player) {
+// //   var num = Number(player.style.top.slice(0, -2))
+// //   if (num > 0) num -= 20;
+// //   player.style.top = num + 'px';
+// // }
+
+// // function moveRight1(player) {
+// //   var num = Number(player.style.left.slice(0, -2))
+// //   if (num < 1240) num += 20;
+// //   player.style.left = num + 'px';
+// // }
+
+// // function moveLeft1(player) {
+// //   var num = Number(player.style.left.slice(0, -2))
+// //   if (num > 0) num -= 20;
+// //   player.style.left = num + 'px';
+// // }
+
