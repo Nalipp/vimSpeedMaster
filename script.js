@@ -1,5 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-
   var player = document.querySelector('#player');
   player.style.top = '340px';
   player.style.left = '620px';
@@ -39,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 48-57
   function captureNum() {
     var multiplerArr = [];
     return {
@@ -82,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var topPosition = (Math.floor(Math.random() * 660 / 20) * 20) + 'px';
 
     var newSpan = document.createElement('span');
-    // newSpan.style.backgroundColor = color;
     newSpan.setAttribute('id', 'snow');
     newSpan.style.left = leftPosition;
     newSpan.style.top = topPosition;
@@ -154,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   startGame();
-});
 
 
 // function randomElement(speed) {
@@ -433,3 +428,59 @@ document.addEventListener('DOMContentLoaded', function() {
 // //   player.style.left = num + 'px';
 // // }
 
+// example : partial function that uses a function(greet) as an argument
+//           passing functions to a partial function this example allows you to combine a permenent argument value
+//             with a function that performs an opperation on the permenent value and a later specfied argument 
+
+//   function greet(greeting, name) {
+//     return greeting + ' ' + name;
+//   }
+
+//   function greetFactory(func, permGreeting) {
+//     return function(name) {
+//       return func(permGreeting, name);
+//     }
+//   }
+
+//   var sayHello = greetFactory(greet, 'hello');
+//   var sayHi = greetFactory(greet, 'hi');
+
+//   console.log(sayHello('Brandon'));    // Hello, Brandon!
+//   console.log(sayHi('Sarah'));         // Hi, Sarah!
+//
+//
+
+// use delegatoin to listen to all the snow objects on the page at the same time (when ever a key is pressed)
+// if (event.target.nodeName === 'snow') check position
+//       document.addEventListener('click', function(event) {
+//         var target = event.target;          // checks every possible target in the document
+//         span.getAttribute('id') === 'snow'                   // 'simple'
+//         if (target.tagName === 'BUTTON') {  // if the target meets the specification an event is preformed
+//           // do someting with target
+//         }
+//       }
+
+
+// use this structure to create an element (snow) and move the position through the public api set the positoin when the factory function is created 
+
+// function makeList() {
+//   var items = [];
+
+//   return {
+//     add: function(item) {
+//       items.push(item);
+//       console.log('"' + item + '"' + ' has been added') 
+//     },
+//     remove: function(item) {
+//       if (items.indexOf(item) !== -1) {
+//         items.splice(items.indexOf(item), 1);
+//         console.log('"' + item + '"' + ' has been deleted') 
+//       }
+//     },
+//     logList: function() {
+//       items.forEach(function(value, index) {
+//         console.log((index + 1) + ': ' + value);
+//       }); 
+//     },
+//   }
+// }
