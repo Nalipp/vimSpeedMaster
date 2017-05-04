@@ -24,7 +24,7 @@ span {
   background-color: purple;
 }
 
-#snow {
+.game-target {
   background-color: white;
   z-index: -1;
 }
