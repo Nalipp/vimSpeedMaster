@@ -2,27 +2,22 @@ $(function() {
   var maxWidth = 1260;
   var maxHeight = 680;
 
+  var startTime = Date.now(); 
   var numCombo = captureCombo();
 
   function newGame() {
     createGameTarget(); 
     createGameTarget();
 
-    $('.game-target').each(function() {
-      console.log($(this).offset());
-    });
-
-    movePlayer();
+    playerListen();
   }
 
-  function movePlayer() {
+  function playerListen() {
     $(document).on('keyup', function(e) {
       var keyCode = e.which;
       numCombo.filterNums(String.fromCharCode(e.which));
 
       var combo = numCombo.getMultiplier();
-
-      console.log(keyCode); 
       if (keyCode === 72 || keyCode === 37) movePos('left', combo);
       if (keyCode === 76 || keyCode === 39) movePos('right', combo);
       if (keyCode === 75 || keyCode === 38) movePos('up', combo);
@@ -30,8 +25,6 @@ $(function() {
     });
 
     function movePos(direction, combo) {
-      console.log('combo'); 
-      console.log(combo);
       var $player = $('#player');
       var $playerPos = $('#player').offset();
       var multipler;
@@ -54,10 +47,38 @@ $(function() {
           else if ($playerPos.top < maxHeight) $player.css('top', '+=' + 20 * combo);
           break;
       }
-      console.log($('#player').offset());
       numCombo.emptyMultiplier();
+      checkTargetMatch();
     }
+
+    function checkTargetMatch() {
+      var playerPos = $('#player').offset();
+      $('.game-target').each(function() {
+        var targetPos = $(this).offset();
+        if (targetPos.top === playerPos.top && targetPos.left === playerPos.left) {
+          createGameTarget(); 
+          updateScore(100)
+          $(this).animate({
+            // heght: "toggle",
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            height: 100,
+            width: 100,
+          }, 400);
+        }
+      });
+    }
+
   }; 
+
+  function updateScore(points) {
+    $score = $('#score')
+    var newTotal = Number($score.text()) + points;
+    $score.text(newTotal);
+  }
+
 
   function random(position) {
     if (position === 'top') return (Math.floor(Math.random() * maxHeight / 20) * 20);
@@ -77,19 +98,10 @@ $(function() {
     var comboArr = [];
     return {
       filterNums: function(key) {
-        if (!isNaN(Number(key))) {
-          comboArr.push(key);
-          console.log('added num key ' + key);
-        } else if (key === 'Escape') {
-          comboArr = [];
-          console.log('emptied all num keys');
-        };
-        console.log(comboArr);
+        if (!isNaN(Number(key))) comboArr.push(key);
       },
       getMultiplier: function() {
-        var num = Number(comboArr.join('')); 
-        if (num !== 0) return num;
-        return 1;
+        return Number(comboArr.join('')) || 1;
       },
       emptyMultiplier: function() {
         comboArr = [];
@@ -97,56 +109,11 @@ $(function() {
     }
   }
 
-
-
-  // function captureNum() {
-  //   var multiplerArr = [];
-  //   return {
-  //     filterNums: function(key) {
-  //       if (!isNaN(Number(key))) { 
-  //         multiplerArr.push(key);
-  //         console.log('added num key ' + key);
-  //       } else if (key === 'Escape') {
-  //         multiplerArr = [];
-  //         console.log('emptied all num keys');
-  //       };
-  //       console.log(multiplerArr);
-  //     },
-  //     getMultiplier: function() {
-  //       num = Number(multiplerArr.join('')); 
-  //       if (num !== 0) return num;
-  //       return 1;
-  //     },
-  //     emptyMultiplier: function() {
-  //       multiplerArr = [];
-  //     }
-  //   }
-  // }
-
-  function updateScore() {
-  }
-
-  function createPlayerElement() {
-  }
-
-
   function resetGame() {
   }
 
   function initiateTimer() {
   }
-
-  // function moveDown1(player, numCombo) {
-  // }
-
-  // function moveUp1(player, numCombo) {
-  // }
-
-  // function moveRight1(player, numCombo) {
-  // }
-
-  // function moveLeft1(player, numCombo) {
-  // }
 
   newGame();
 });

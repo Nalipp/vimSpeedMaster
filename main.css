@@ -25,6 +25,7 @@ span {
 }
 
 .game-target {
+  display: inline-block;
   background-color: white;
   z-index: -1;
 }
