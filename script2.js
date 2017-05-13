@@ -4,10 +4,12 @@ $(function() {
 
   var startTime = Date.now(); 
   var numCombo = captureCombo();
+  var elementTime = createElementTime();
 
   function newGame() {
     createGameTarget(); 
     createGameTarget();
+    // createGameTime();
 
     playerListen();
   }
@@ -57,21 +59,66 @@ $(function() {
         var targetPos = $(this).offset();
         if (targetPos.top === playerPos.top && targetPos.left === playerPos.left) {
           createGameTarget(); 
-          updateScore(100)
-          $(this).animate({
-            // heght: "toggle",
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            height: 100,
-            width: 100,
-          }, 400);
+          flashBackground();
+          $(this).remove();
+          createGameTarget(); 
         }
       });
     }
-
   }; 
+
+  function flashBackground() {
+    elementTime.setEndTime();
+    var elementSpeed = elementTime.getTotalDifference();
+      console.log(elementSpeed);
+    elementTime.resetStartTime();
+    var speed;
+
+    switch (true) {
+      case (elementSpeed < 1000): 
+        console.log('less than 1000')
+        updateScore(1600);
+        speed = 100;
+        break;
+      case (elementSpeed < 2000): 
+        console.log('less than 2000')
+        updateScore(800);
+        speed = 150;
+        break;
+      case (elementSpeed < 3000): 
+        console.log('less than 3000')
+        updateScore(400);
+        speed = 200;
+        break;
+      case (elementSpeed < 4000): 
+        console.log('less than 4000')
+        updateScore(200);
+        speed = 250;
+        break;
+      default:
+        console.log('more than 4000')
+        updateScore(100);
+        speed = 300;
+    }
+
+    $('body').toggleClass('flash-background', speed).toggleClass('flash-background', speed * 2);
+  }
+
+  function createElementTime() {
+    var startTime = Date.now();
+    var endTime = null;
+    return {
+      resetStartTime: function() {
+        startTime = Date.now();
+      }, 
+      setEndTime: function() {
+        endTime = Date.now();
+      },
+      getTotalDifference: function() {
+        return endTime - startTime;
+      },
+    }
+  }
 
   function updateScore(points) {
     $score = $('#score')
@@ -117,129 +164,4 @@ $(function() {
 
   newGame();
 });
-=======
-
-console.log('hi');
-function newGame() {
-  // initiates playerElement
-  // initiates score
-  var gameTarget = createGameTarget() // initiates gameElement
-
-  console.log(gameTarget.getLeftPosition());
-
-  listenKeypress() // listens to document for keypress
-}
-
-function listenKeypress() {
-  var player = document.querySelector('#player');
-
-  document.addEventListener('keyup', function(event) {
-    var keyCode = event.which;
-    if (keyCode === 74 || keyCode === 40) playerPosition(moveDirection, combo);
-    if (keyCode === 75 || keyCode === 38) playerPosition(moveDirection, combo); 
-    if (keyCode === 72 || keyCode === 37) playerPosition(moveDirection, combo);
-    if (keyCode === 76 || keyCode === 39) playerPosition(moveDirection, combo);
-    
-    // if (snow1.getLeftPosition() === player.style.left && snow1.getTopPosition() === player.style.top) {
-    //   gameScore.incrementScore1();
-    //   score.textContent = gameScore.getScore();
-
-    //   snow = document.querySelector('#snow');
-    //   snow.remove()
-    //   snow1 = null;
-
-    //   snow1 = createGameElement('snow');
-    // }
-  });
-}
-
-function createGameTarget() {
-  var target = document.querySelector('#game-target'); 
-  var topPosition = (Math.floor(Math.random() * 660 / 20) * 20) + 'px';
-  var leftPosition = (Math.floor(Math.random() * 1240 / 20) * 20) + 'px';
-  target.style.top = topPosition;
-  target.style.left = leftPosition;
-  return {
-    getLeftPosition: function() {
-      return leftPosition; 
-    },
-    getTopPosition: function() {
-      return topPosition;
-    },
-  }
-}
-
-function createPlayer(direction, combo) {
-  var multipler = combo;
-    
-  var topPosition = 340; 
-  var leftPosition = 620; 
-
-  // updates current top and left position (including combo)
-  return {
-    getCurrentTop : function() {
-      return currentTop;
-    },
-    getCurrentLeft : function() {
-      return currentLeft;
-    },
-    updateTopPosition : function(newValue) {
-      var currentValue = Number(player.style.top.slice(0, -2));
-      var topPosition = currentValue += newValue; 
-    }
-    updateLeftPosition : function(newValue) {
-      var currentValue = Number(player.style.left.slice(0, -2));
-      var leftPosition = currentValue += newValue; 
-    }
-  }
-  
-}
-
-
-// function moveLeft1(player, numCombo) {
-//   var multipler = numCombo.getMultiplier()
-//   var num = Number(player.style.left.slice(0, -2))
-//   incrementNum = 20 * multipler; 
-//   if ((num - incrementNum) > 0) {
-//     num -= incrementNum;
-//   } else {
-//     num = 0;
-//   }
-//   player.style.left = num + 'px';
-//   numCombo.emptyMultiplier();
-// }
-
-function captureCombo() {
-}
-
-function updateScore() {
-}
-
-function createPlayerElement() {
-}
-
-function movePlayer(direction, combo) {
-}
-
-function resetGame() {
-}
-
-function initiateTimer() {
-}
-
-// function moveDown1(player, numCombo) {
-// }
-
-// function moveUp1(player, numCombo) {
-// }
-
-// function moveRight1(player, numCombo) {
-// }
-
-// function moveLeft1(player, numCombo) {
-// }
-
-newGame();
-
-
 
