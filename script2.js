@@ -70,33 +70,27 @@ $(function() {
   function flashBackground() {
     elementTime.setEndTime();
     var elementSpeed = elementTime.getTotalDifference();
-      console.log(elementSpeed);
     elementTime.resetStartTime();
     var speed;
 
     switch (true) {
       case (elementSpeed < 1000): 
-        console.log('less than 1000')
         updateScore(1600);
         speed = 100;
         break;
       case (elementSpeed < 2000): 
-        console.log('less than 2000')
         updateScore(800);
         speed = 150;
         break;
       case (elementSpeed < 3000): 
-        console.log('less than 3000')
         updateScore(400);
         speed = 200;
         break;
       case (elementSpeed < 4000): 
-        console.log('less than 4000')
         updateScore(200);
         speed = 250;
         break;
       default:
-        console.log('more than 4000')
         updateScore(100);
         speed = 300;
     }
