@@ -1,17 +1,18 @@
 $(function() {
   var maxWidth = 1260;
   var maxHeight = 680;
+  var gameTime = 6;
 
   var startTime = Date.now(); 
   var numCombo = captureCombo();
   var elementTime = createElementTime();
 
+
   function newGame() {
     createGameTarget(); 
-    createGameTarget();
-    // createGameTime();
-
+    createGameTarget(); 
     playerListen();
+    initiateTimer();
   }
 
   function playerListen() {
@@ -66,6 +67,29 @@ $(function() {
       });
     }
   }; 
+
+  function initiateTimer() {
+    $time = $('#time');
+    $time.text(gameTime);
+    var sec = gameTime;
+
+    var timer = setInterval(function() {
+      sec--;
+      $time.text(sec);
+      console.log(sec);
+      
+      if (sec < 1) {
+        $('#time').text('game over');
+        clearInterval(timer);
+        endGame();
+      }
+    }, 1000);
+  }
+
+  function endGame() {
+    $('body').css('font-size', '100px');
+    $('body').text('game over');
+  }
 
   function flashBackground() {
     elementTime.setEndTime();
@@ -151,9 +175,6 @@ $(function() {
   }
 
   function resetGame() {
-  }
-
-  function initiateTimer() {
   }
 
   newGame();
