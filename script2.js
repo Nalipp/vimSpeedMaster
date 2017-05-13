@@ -1,7 +1,7 @@
 $(function() {
   var maxWidth = 1260;
   var maxHeight = 680;
-  var gameTime = 6;
+  var gameTime = 20;
 
   var startTime = Date.now(); 
   var numCombo = captureCombo();
@@ -76,7 +76,6 @@ $(function() {
     var timer = setInterval(function() {
       sec--;
       $time.text(sec);
-      console.log(sec);
       
       if (sec < 1) {
         $('#time').text('game over');
@@ -87,8 +86,15 @@ $(function() {
   }
 
   function endGame() {
-    $('body').css('font-size', '100px');
-    $('body').text('game over');
+    $(document).off();
+    $('#score').css('color', 'purple');
+    $('aside').append('<button id="play-again">play again</button>')
+    $('#play-again').on('click', function(e) {
+      e.preventDefault();
+      $(this).remove();
+      location.reload();
+      newGame();
+    });
   }
 
   function flashBackground() {
