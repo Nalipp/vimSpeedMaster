@@ -69,15 +69,13 @@ $(function() {
   }; 
 
   function initiateTimer() {
-    $time = $('#time');
-    $time.text(gameTime);
-    var sec = gameTime;
+    $('#time').text(gameTime);
 
     var timer = setInterval(function() {
-      sec--;
-      $time.text(sec);
+      gameTime--;
+      $('#time').text(gameTime);
       
-      if (sec < 1) {
+      if (gameTime < 1) {
         $('#time').text('game over');
         clearInterval(timer);
         endGame();
@@ -105,18 +103,22 @@ $(function() {
 
     switch (true) {
       case (elementSpeed < 1000): 
+        gameTime += 3;
         updateScore(1600);
         speed = 100;
         break;
       case (elementSpeed < 2000): 
+        gameTime += 2;
         updateScore(800);
         speed = 150;
         break;
       case (elementSpeed < 3000): 
+        gameTime += 1;
         updateScore(400);
         speed = 200;
         break;
       case (elementSpeed < 4000): 
+        gameTime += 1;
         updateScore(200);
         speed = 250;
         break;
