@@ -2,7 +2,7 @@ The faster you move the more points you get!
 
 ![screenshot](./portfolio_vim.jpg)
 
-##Instructions
+## Instructions
 
 Move the purple curssor onto the white boxes.
 
@@ -10,7 +10,7 @@ Each time there is a collision new boxes will apear.
 
 Higher points and bonus seconds are rewared for faster collisions so using vim combinations is key.
 
-###Vim primer
+### Vim primer
 
 Move cursor
 ```
@@ -32,6 +32,6 @@ If you just want to practice number combos you can also use the arrow keys
 12<- moves left 12 times
 ```
 
-###Needs to be done
+### Needs to be done
 Explore functional programming concepts while rewriting this code
 Separate code into modules
